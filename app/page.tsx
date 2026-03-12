@@ -276,9 +276,14 @@ function HomeTab({
   const online = contacts.filter((c) => c.status === "online").length;
   const favs   = contacts.filter((c) => c.favorite);
 
-  // Award +3 tokens for visiting home each session (once per mount)
+  // Award +3 tokens for visiting home once per calendar day
   useEffect(() => {
-    onEarn(3, "Daily visit bonus 🌱");
+    const key = "hh_last_visit_day";
+    const today = new Date().toDateString();
+    if (typeof window !== "undefined" && localStorage.getItem(key) !== today) {
+      localStorage.setItem(key, today);
+      onEarn(3, "Daily visit bonus 🌱");
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -1224,7 +1229,7 @@ export default function Page() {
       setHistory(loadHistory());
       setWallet(loadWallet());
     } catch (e) {
-      setInitErr(e instanceof Error ? e.message : "Initialisation failed");
+      setInitErr(e instanceof Error ? e.message : "Initialization failed");
     } finally {
       setLoading(false);
     }
