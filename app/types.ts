@@ -1,13 +1,11 @@
-// ── Core domain types for HydrHost emoji phone network ──────────────────────
+// ── HydrHost — complete domain types ────────────────────────────────────────
+
+// ── Phone / Signal ────────────────────────────────────────────────────────────
 
 export interface PhoneNumber {
-  /** Exactly 8 (or more) emoji blocks making up the number */
   blocks: string[];
-  /** Blocks joined without separators */
   raw: string;
-  /** Hex digest derived from the device fingerprint */
   deviceId: string;
-  /** ISO-8601 timestamp of generation */
   createdAt: string;
 }
 
@@ -49,18 +47,15 @@ export interface CallRecord {
   contactName: string;
   contactNumber: string;
   direction: CallDirection;
-  /** Duration in seconds */
   duration: number;
   timestamp: string;
 }
 
 /**
- * Phases of a call lifecycle driven by the hydrogen-shell signal model:
- *
- *  idle       – no call in progress, device emitting its own signal
- *  scanning   – scanning the hydrogen shell for the target's signal pulse
- *  ringing    – signal found; phone is ringing the target device
- *  connected  – target picked up; live call in progress
+ * idle      → device broadcasting carrier signal, no call active
+ * scanning  → AI exchange scanning hydrogen shell for target signal
+ * ringing   → target signal locked; ringing their device
+ * connected → picked up; voice electrons attached to carrier proton
  */
 export type CallPhase = "idle" | "scanning" | "ringing" | "connected";
 
@@ -70,4 +65,66 @@ export interface DialState {
   duration: number;
   target: Contact | null;
   error: string | null;
+}
+
+// ── Token Economy ─────────────────────────────────────────────────────────────
+
+/**
+ * 4 level stages represented by card suits.
+ * Earned through activity — never purchased.
+ */
+export type UserLevel = "♣️" | "♦️" | "♥️" | "♠️";
+
+export const LEVEL_THRESHOLDS: Record<UserLevel, number> = {
+  "♣️": 0,
+  "♦️": 100,
+  "♥️": 500,
+  "♠️": 2000,
+};
+
+export const LEVEL_NAMES: Record<UserLevel, string> = {
+  "♣️": "Club",
+  "♦️": "Diamond",
+  "♥️": "Heart",
+  "♠️": "Spade",
+};
+
+export type BoostType = "star" | "mushroom";
+
+export interface ActiveBoost {
+  type: BoostType;
+  /** ISO timestamp when this boost expires */
+  expiresAt: string;
+  emoji: string;
+  label: string;
+}
+
+export interface TokenWallet {
+  balance: number;
+  totalEarned: number;
+  level: UserLevel;
+  /** 0–100 progress toward the next level */
+  levelProgress: number;
+  activeBoosts: ActiveBoost[];
+  /** Number of times user has Warped (spent tokens for upgrades) */
+  warpsUsed: number;
+  /** Bugs stomped (quality metric / fun stat) */
+  bugsStomped: number;
+}
+
+export interface EarnRecord {
+  id: string;
+  amount: number;
+  reason: string;
+  timestamp: string;
+}
+
+// ── Value Chain ───────────────────────────────────────────────────────────────
+
+export interface ChainStep {
+  emoji: string;
+  label: string;
+  description: string;
+  tokenCost: number;
+  unlocked: boolean;
 }
