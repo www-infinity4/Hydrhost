@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f0fdf4;
+  --foreground: #14532d;
+  --primary: #16a34a;
+  --surface: #ffffff;
+  --border: #bbf7d0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ── Animations ─────────────────────────────────────────────────────────── */
+
+@keyframes float-up {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
+@keyframes grow-in {
+  from { opacity: 0; transform: scale(0.93); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes soft-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Signal-specific animations */
+@keyframes signal-ring {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+@keyframes signal-scan {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes signal-pulse-ring {
+  0%   { box-shadow: 0 0 0 0   rgba(22,163,74,0.6); }
+  70%  { box-shadow: 0 0 0 16px rgba(22,163,74,0);   }
+  100% { box-shadow: 0 0 0 0   rgba(22,163,74,0);    }
+}
+
+@keyframes waveform {
+  0%,100% { transform: scaleY(0.3); }
+  50%      { transform: scaleY(1);   }
+}
+
+.animate-float      { animation: float-up  3s ease-in-out infinite; }
+.animate-grow-in    { animation: grow-in   0.25s ease-out forwards; }
+.animate-pulse-s    { animation: soft-pulse 2s ease-in-out infinite; }
+.animate-slide-up   { animation: slide-up  0.3s ease-out forwards; }
+.animate-scan       { animation: signal-scan 1.4s linear infinite; }
+.animate-pulse-ring { animation: signal-pulse-ring 1.4s ease-out infinite; }
+
+/* Ripple rings for signal emission */
+.signal-ripple {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(22,163,74,0.5);
+  animation: signal-ring 1.6s ease-out infinite;
+}
+.signal-ripple:nth-child(2) { animation-delay: 0.5s; }
+.signal-ripple:nth-child(3) { animation-delay: 1.0s; }
+
+/* Waveform bars */
+.wave-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: currentColor;
+  animation: waveform 0.6s ease-in-out infinite;
+}
+.wave-bar:nth-child(1) { animation-delay: 0.0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.2s; }
+.wave-bar:nth-child(6) { animation-delay: 0.1s; }
+.wave-bar:nth-child(7) { animation-delay: 0.0s; }
+
+.glass {
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(187,247,208,0.6);
+}
+
+.nature-bg {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 55%, #bbf7d0 100%);
+}
